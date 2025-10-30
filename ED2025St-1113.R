@@ -20,9 +20,11 @@ if(!require(vars)){
   library(vars)
 }
 
+#### USTAWIENIE KATALOGU ROBOCZEGO MOZNA ZROBIC ZA POMOCA #####
+#### Session -> Set working directory -> To source file location
 
 #####  Katalog roboczy #####
-
+#setwd("C:/Pobrane") <-to jest schemat polecenia
 
 #####  Import danych #####
 #Dane kwartalne z okresu 1947:1 - 2021:2
@@ -34,60 +36,59 @@ if(!require(vars)){
 ##### wczytanie danych i wstepna analiza #####
 
 #wczytanie danych
+dane_oryginalne = read.delim("dane_oryginalne.txt", row.names=1)
 
 #wyswietla poczatek danych
+poczatek_danych <- head(dane_oryginalne)
+poczatek_danych
 #wyswietla koniec danych 
-
+koniec_danych <- tail(dane_oryginalne)
+koniec_danych
 #liczba analizowanych zmiennych
-
+liczba_analizowanych_zmiennych <- ncol(dane_oryginalne)
+liczba_analizowanych_zmiennych
 #liczba zebranych obserwacji
+liczba_zebranych_obserawacji <- nrow(dane_oryginalne)
+liczba_zebranych_obserawacji
 
 #nazwy zmiennych
-
-
+nazwy_zmiennych <- names(dane_oryginalne) #lub colnames(dane_oryginalne)
+nazwy_zmiennych
 #####  Przekształcanie zmiennych #####
 
 #logarytm naturalny
-
+logartym_naturalny <- log(dane_oryginalne)
+logartym_naturalny
 #zapis danych w postaci macierzy
-
+dane_w_postaci_macierzy <- as.matrix(dane_oryginalne)
+dane_w_postaci_macierzy
 #zapis danych w postaci szeregu czasowego
+szereg_czasowy <- ts(logartym_naturalny, start = c(1947,1,1), frequency = 4) 
+szereg_czasowy
 
 
 #####  Wykresy i wstępna analiza poziomów #####
 
 #laczny wykres calego szeregu
+wykres <- plot.ts(szereg_czasowy)
+wykres
 
-
+#PĘTLA FOR W R
+# for (i in 1:3){piszemy polecenia}
+for (i in 1:3){
+  print(i)
+  print(i^2)
+  print("witam")
+}
+# MACIERZE W R
+# M[,1] - PIERWSZA KOLUMNA
+# M[,i] - KOLUMNA i
+# M[1,] - WIERSZ 1
+# M[i,] - WIERSZ i
+# M[,c(1,3)] - KOLUMNA 1 i 3 
 #laczny wykres poziomow calego szeregu z trendem liniowym
-
 #Analiza poziomów
 
 #liczba opóznien do ACF i PACF
 
 #szereg, acf, pacf
-par(mfrow=c(1,1))#jeden wykres
-par(mfrow=c(n, 3))#podzial obszaru wykresu na n wierszy i 3 kolumny 
-
-#zapis do pliku pdf
-#wymiary
-pdf_h = 8.75
-pdf_w = 12.71
-
-#otwieramy plik
-pdf(file = "poziomy.pdf", width = pdf_w, height = pdf_h)
-par(mfrow=c(1,1))
-par(mfrow=c(n, 3))
-
-#wykres
-
-dev.off()#zamykamy plik
-
-#To co wyzej, tylko z zapisem do pliku jpeg
-jpeg(file = "poziomy.jpeg")
-par(mfrow=c(1,1))
-par(mfrow=c(n, 3))
-#wykres
-
-dev.off()
-
